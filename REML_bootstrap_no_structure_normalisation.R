@@ -19,56 +19,34 @@ simulation_bootstrap <- function(h2_sim,p,n,K,Ke,n_simu,iterations) {
     stockage_E <- rep(NA,n)
     cat(
       'Simulation', b, 'sur', n_simu
-      )
+    )
     # Simulation des frequences alleliques
-    f <- runif(p,0.05,0.5)
-    # Simulation du vecteur d'effets des variants u, et determination de la variance de G 
-    u <- rnorm(p, 0, sqrt(h2_sim/p))
-    g <- rep(NA,10000)
-    for (i in 1:10000){
-      genotypes <- rbinom (p, 2, f)
-      g[i] <- sum(genotypes*u)
-    }
-    var_g <- var(g)
-    
-    #Determination du seuil t de liabilite adequat avec individus jetables
-    cat("
-    Etablissement du seuil t adequat  ...
-      ")
-    l <- rep(NA,2000)
-    stockage_t <- rep(NA,100)
-    for (i in 1:100) {
-      for (j in 1:2000){
-        genotypes <- rbinom (p,2,f)
-        g <- sum(genotypes*u)
-        e <- rnorm(1, 0, sqrt(var_g*(1/h2_sim-1)))
-        l[j] <- e+g
-      }
-      l <- sort(l,decreasing=TRUE)
-      stockage_t[i] <- l[2000*K]
-    }
-    t <- mean(stockage_t)
-    matrice_stockage <- matrix(nrow=p, ncol=n)
-    save_pheno <- rep(NA, n)
+    f <- runif(p,0.05,0.5) #Simulation des frequences alleliques
+    u <- rnorm(p, 0, sqrt(h2_sim/p)) #Simulation des effets des variants
+    E <- 2*f #Pour la normalisation
+    SD <- sqrt(2*f*(1-f)) #Pour la normalisation
+    matrice_stockage <- matrix(nrow=p, ncol=n) #Matrice de stockage des genotypes
+    save_pheno <- rep(NA, n) #vecteur de sauvegarde des phenotypes
     n_etude <- 0
     cat("
         Inclusion de", n, 'individus ...
         '
     )
     while(n_etude < n){
-      Z <- rbinom (p, 2, f)
-      g <- sum(Z*u)
-      e <- rnorm(1, 0, sqrt(var_g*(1/h2_sim-1)))
+      Z <- rbinom (p, 2, f) #tirage des genotypes
+      Z_norm <- (Z - E)/SD #normalisation des genotypes
+      g <- sum(Z_norm*u) #determination de G pour l'individu
+      e <- rnorm(1, 0, sqrt(1-h2_sim)) #determination de E pour l'individu
       l <- g + e
       ifelse (l > t, y <- 2, y <- 1) 
-      if (y==2){
+      if (y==2){ #sauvegarde si l'individu est un cas
         matrice_stockage[,n_etude+1] <- Z
         save_pheno[n_etude+1] <- y
         n_etude <- n_etude+1
         stockage_G[n_etude] <- g
         stockage_E[n_etude] <- e
       } 
-      else {
+      else { #tirage si controle
         s <- as.numeric(rbinom (1, 1, (K*(1-Ke)) / (Ke*(1-K))))
         if (s==1){
           matrice_stockage[,n_etude+1] <- Z

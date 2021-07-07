@@ -23,6 +23,7 @@ for (a in 1:20){
   gc()
   write.bed.matrix(x1, 'simu')
   
+  #calcul de la GRM puis importation pour determination des composantes principales
   system("./ldak5.1.linux --calc-kins-direct grm --bfile simu --ignore-weights YES --power -1")
   details <- read.table('grm.grm.details', header = T, sep ='')
   write.table(details, 'grm.grm.N.bin', quote = FALSE)
@@ -30,7 +31,9 @@ for (a in 1:20){
   eigK <- eigen(grm_initial)
   eigK$values [eigK$values < 0] <- 0
   pc <- sweep(eigK$vectors, 2, sqrt(eigK$values), '*')
+  #creation fichier pheno format plink
   covar_pheno(10)
+  #ajustement de la GRM sur les covariables pour PCGC
   system("./ldak5.1.linux --adjust-grm pcgc.covar --grm grm --covar QC.covar")
   system("./ldak5.1.linux --pcgc resultats --pheno QC.pheno --covar QC.covar --grm pcgc.covar --prevalence .01")
   her_liab <- read.table("/home/simon/resultats.pcgc")
