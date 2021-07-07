@@ -9,7 +9,7 @@ require(genio)
 #n_simu = nombre de simulations
 #iterations = nombre d'iterations pour bootstrap
 
-simulation_bootstrap <- function(h2_sim,p,n,K,Ke,n_simu,iterations) {
+simulation_bootstrap_norm <- function(h2_sim,p,n,K,Ke,n_simu,iterations) {
   stockage_heritabilite_PCGC <- rep(NA,n_simu)
   stockage_heritabilite_REML <- rep(NA,n_simu)
   stockage_heritabilite_REML_bootstrap <- rep(NA,n_simu)
@@ -114,4 +114,4 @@ simulation_bootstrap <- function(h2_sim,p,n,K,Ke,n_simu,iterations) {
   return(x)
 }
 
-x <- simulation_bootstrap(0.5,5000,2000,0.01,0.5,1,100)
+x <- simulation_bootstrap_norm(0.5,5000,2000,0.01,0.5,1,100)

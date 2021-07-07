@@ -8,7 +8,7 @@ require(genio)
 #n_simu = nombre de simulations
 
 
-simulation <- function(h2_sim,p,n,K,Ke,n_simu) {
+simulation_norm <- function(h2_sim,p,n,K,Ke,n_simu) {
   stockage_heritabilite_PCGC <- rep(NA,n_simu)
   stockage_heritabilite_REML <- rep(NA,n_simu)
   stockage_correlation <- rep(NA,n_simu)
@@ -86,5 +86,5 @@ simulation <- function(h2_sim,p,n,K,Ke,n_simu) {
   return(x)
 }
 
-x <- simulation(0.8,5000,2000,0.01,0.5,10)
+x <- simulation_norm(0.8,5000,2000,0.01,0.5,10)
 

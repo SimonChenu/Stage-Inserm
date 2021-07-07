@@ -33,7 +33,7 @@ covar_pheno_bootstrap <- function(n){
 }
 
 #fonction generant la bed matrice avec structure de population
-generation <- function(h2,score_IBS,Ke){
+generation <- function(h2,Ke,score_IBS){
   u <- rnorm(444601, sd=sqrt(h2/444601))
   #1
   x <- read.bed.matrix('structure01')
