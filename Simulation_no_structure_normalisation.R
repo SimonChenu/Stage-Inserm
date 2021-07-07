@@ -86,5 +86,5 @@ simulation_norm <- function(h2_sim,p,n,K,Ke,n_simu) {
   return(x)
 }
 
-x <- simulation_norm(0.8,5000,2000,0.01,0.5,10)
+x <- simulation_norm(0.5,5000,2000,0.01,0.5,10)
 
