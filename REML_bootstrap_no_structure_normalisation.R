@@ -14,6 +14,7 @@ simulation_bootstrap <- function(h2_sim,p,n,K,Ke,n_simu,iterations) {
   stockage_heritabilite_REML <- rep(NA,n_simu)
   stockage_heritabilite_REML_bootstrap <- rep(NA,n_simu)
   stockage_correlation <- rep(NA,n_simu)
+  t <- qnorm(1-K, mean = 0, sd=1) #seuil de liabilite
   for (b in 1:n_simu){
     stockage_G <- rep(NA,n)
     stockage_E <- rep(NA,n)
