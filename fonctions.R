@@ -16,7 +16,7 @@ covar_pheno <- function(n){
   write.table(matrice_pheno, file='QC.pheno', quote=FALSE, row.names=FALSE, col.names = FALSE)
 }
 
-#idem pour le bootstrap de REML avec structure de population
+#creation des fichiers .covar et .pheno pour le bootstrap (x2 au lieu de x1 dans cette fonction)
 covar_pheno_bootstrap <- function(n){
   PC <- matrix(nrow=length(x2@ped[["famid"]]), ncol=n+2)
   PC[,1] <- x2@ped[["famid"]]
