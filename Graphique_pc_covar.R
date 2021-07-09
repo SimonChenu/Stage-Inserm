@@ -1,5 +1,7 @@
 #Code pour aboutir aux graphiques de h2 en fonction des PC en covariables
 
+require(gaston)
+require(OmicKriging)
 #Calcul de la GRM par modele GCTA
 x1 <- generation(0.5,0.5,0)
 write.bed.matrix(x1, 'simu')
